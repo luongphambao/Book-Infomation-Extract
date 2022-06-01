@@ -1,5 +1,6 @@
 const dropArea = document.querySelector(".drag-area");
 const dragText = document.querySelector(".header");
+const extractBtn = document.querySelector(".btn-extract");
 
 let button = dropArea.querySelector(".button");
 let input = dropArea.querySelector("input");
@@ -23,6 +24,7 @@ input.addEventListener("change", function () {
 	file = this.files[0];
 	dropArea.classList.add("active");
 	displayFile();
+	extractBtn.value = 'Extract';
 });
 
 // when file is inside drag area
@@ -57,7 +59,7 @@ const testClick = () => {
 
 document.querySelector("form").addEventListener("submit", function (e) {
 	e.preventDefault();
-	if ((file == null) || document.querySelector(".btn-extract").value == "Re-upload") {
+	if ((file == null) || extractBtn.value == "Re-upload") {
 		input.click();
 	} else {
 		loading_on();
