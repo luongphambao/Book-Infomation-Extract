@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Book Cover Digitizer</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Architects+Daughter&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+        <link href="{{ url_for('static', filename='styles.css') }}" rel="stylesheet">
+    </head>
+    <body>
+        <div class="logo">
+            <i class="fas fa-book-reader"></i>
+        </div>
+        <h1>Book Cover Digitizer</h1>
+
+        <div class="overlay">
+            <div class="loading_wrapper">
+                <div class="circle"></div>
+                <div class="circle"></div>
+                <div class="circle"></div>
+                <div class="shadow"></div>
+                <div class="shadow"></div>
+                <div class="shadow"></div>
+                <span>Extracting...</span>
+            </div>
+        </div>
+        <div class="main">
+            <div class="container">
+                <form enctype="multipart/form-data">
+                    <h3>Upload your image</h3>
+                    <div class="drag-area">
+                            <button id='close'>close</button>
+                        <div class="icon">
+                            <i class="fas fa-image"></i>
+                        </div>
+                        <span class="header">Drag & Drop</span>
+                        <span class="header">or</span>
+                        <span class="button">Click to browse manually</span>
+                        <input type="file" name="file" hidden />
+                        <span class="support">Supported formats: JPEG, JPG, PNG.</span>
+                        <span class="note">All four corners should be clearly visible.</span>
+                    </div>
+    
+                    <div class="container__submit">
+                        <div>
+                            <input type="submit" onclick="testClick()" value="Extract" class="btn-extract" id="submitbtn" />
+                        </div>
+                    </div>
+                </form>
+            </div>
+            
+            <div class="extracted">
+                <h3>Extracted information</h3>
+                <div class="extracted__img"></div>
+                <div class="extracted__info">
+                    <span class="info__title">Title: </span><br />
+                    <span class="info__sub_title">Sub title: </span><br />
+                    <span class="info__author">Author(s): </span><br />
+                    <span class="info__date">Date of publication: </span><br />
+                    <span class="info__others">Others: </span><br />
+                </div>
+            </div>
+        </div>
+        <script src="{{ url_for('static', filename='script.js') }}"></script>
+    </body>
+</html>
