@@ -24,7 +24,6 @@ input.addEventListener("change", function () {
 	file = this.files[0];
 	dropArea.classList.add("active");
 	displayFile();
-	extractBtn.value = 'Extract';
 });
 
 // when file is inside drag area
@@ -142,8 +141,11 @@ function displayFile() {
 			dropArea.innerHTML = imgTag;
 		};
 		fileReader.readAsDataURL(file);
+		extractBtn.value = 'Extract';
+		return true;
 	} else {
 		alert("This file is not supported!");
 		dropArea.classList.remove("active");
+		return false;
 	}
 }
