@@ -57,8 +57,8 @@ const testClick = () => {
 
 document.querySelector("form").addEventListener("submit", function (e) {
 	e.preventDefault();
-	if (file == null) {
-		alert("Please upload your image!");
+	if ((file == null) || document.querySelector(".btn-extract").value == "Re-upload") {
+		input.click();
 	} else {
 		loading_on();
 		const formData = new FormData();
@@ -110,6 +110,8 @@ document.querySelector("form").addEventListener("submit", function (e) {
 				document.querySelector(
 					".extracted__img"
 				).innerHTML = `<img src="/static/src/0.jpg?v=${update.getTime()}" />`; // To update avoid using image from cache
+
+				document.querySelector(".btn-extract").value = 'Re-upload'
 			} else {
 				window.alert(data.status);
 			}
