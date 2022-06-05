@@ -2,7 +2,7 @@ from flask import Flask, jsonify, render_template, request
 from werkzeug.utils import secure_filename
 
 import os
-
+from infomation_extractor import Predictor
 app = Flask(__name__, template_folder='./')
 
 
@@ -24,14 +24,18 @@ def extract():
             app.config['UPLOAD_FOLDER'], secure_filename(f.filename)))
 
         # Extract info API HERE
-
+        predictor = Predictor()
+        predictor.load_detect_model()
+        predictor.load_reg_model()
+        book_info=predictor.predict("uploads/10.jpg")
+        print(book_info)
         extracted_infos = {
-			"status": "OK", #any status <> "OK" means failed to extract
-            "title": "info",
-            "sub_title": "info2",
-            "author": "info3",
-            "date": "info4",
-            "others": "info5"
+			"status": book_info[0], #any status <> "OK" means failed to extract
+            "title": book_info[1],
+            "sub_title": book_info[2],
+            "author": book_info[3],
+            "date": book_info[4],
+            "others": book_info[5]
         }
         return jsonify(extracted_infos)
     else:
