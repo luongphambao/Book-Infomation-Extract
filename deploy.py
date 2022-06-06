@@ -6,7 +6,7 @@ from infomation_extractor import Predictor
 app = Flask(__name__, template_folder='./')
 
 
-UPLOAD_FOLDER = './uploads'
+UPLOAD_FOLDER = './static/src/uploads'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 
@@ -25,12 +25,13 @@ def extract():
 
         # Extract info API HERE
         
-        book_info=predictor.predict("./uploads/" + secure_filename(f.filename))
+        book_info=predictor.predict("./static/src/uploads/" + secure_filename(f.filename))
         print('####################')
         print(book_info)
         print('####################')
         extracted_infos = {
 			"status": "OK", #any status <> "OK" means failed to extract
+            "file": secure_filename(f.filename),
             "title": book_info[0],
             "author": book_info[1],
             "publisher": book_info[2],

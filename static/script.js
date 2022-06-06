@@ -98,9 +98,9 @@ document.querySelector("form").addEventListener("submit", function (e) {
 					".info__date"
 				).innerHTML = `Date of publication: ${data.date}`;
 
-				// document.querySelector(
-				// 	".extracted__img"
-				// ).innerHTML = `<img src="/static/src/0.jpg?v=${update.getTime()}" />`; // To update avoid using image from cache
+				document.querySelector(
+					".extracted__img"
+				).innerHTML = `<img src="/static/src/uploads/${data.file}" />`; // To update avoid using image from cache
 
 				document.querySelector(".btn-extract").value = 'Re-upload'
 			} else {
