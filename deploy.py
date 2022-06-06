@@ -24,22 +24,26 @@ def extract():
             app.config['UPLOAD_FOLDER'], secure_filename(f.filename)))
 
         # Extract info API HERE
-        predictor = Predictor()
-        predictor.load_detect_model()
-        predictor.load_reg_model()
-        book_info=predictor.predict("uploads/10.jpg")
+        
+        book_info=predictor.predict("./uploads/" + secure_filename(f.filename))
+        print('####################')
         print(book_info)
+        print('####################')
         extracted_infos = {
-			"status": book_info[0], #any status <> "OK" means failed to extract
-            "title": book_info[1],
-            "sub_title": book_info[2],
-            "author": book_info[3],
-            "date": book_info[4],
-            "others": book_info[5]
+			"status": "OK", #any status <> "OK" means failed to extract
+            "title": book_info[0],
+            "author": book_info[1],
+            "publisher": book_info[2],
+            "volume": book_info[3],
+            "translator": book_info[4],
+            "date": book_info[5]
         }
         return jsonify(extracted_infos)
     else:
         return ''
 
 if __name__ == '__main__':
+    predictor = Predictor()
+    predictor.load_detect_model()
+    predictor.load_reg_model()
     app.run(debug=True)

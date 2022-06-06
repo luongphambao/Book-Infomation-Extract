@@ -67,19 +67,6 @@ document.querySelector("form").addEventListener("submit", function (e) {
 		const xhr = new XMLHttpRequest();
 
 		xhr.onload = function () {
-			// if (xhr.readyState == XMLHttpRequest.DONE && xhr.status == 200) {
-			// window.alert(xhr.status)
-			// loading_off();
-			// const data = JSON.parse(xhr.responseText).data;
-			// const update =  new Date();
-			// document.querySelector('.extracted__img').innerHTML = `<img src="/static/src/0.jpg?v=${update.getTime()}" />`; // To update avoid using image from cache
-			// document.querySelector('.info__title').innerHTML = `Title: ${data[1]}`;
-			// }
-			// else if (xhr.status == 404){
-			//   const data = JSON.parse(xhr.responseText).data;
-			//   window.alert(data)
-			//   loading_off()
-			// }
 
 			setTimeout(() => {
 				loading_off();
@@ -96,21 +83,24 @@ document.querySelector("form").addEventListener("submit", function (e) {
 					".info__title"
 				).innerHTML = `Title: ${data.title}`;
 				document.querySelector(
-					".info__sub_title"
-				).innerHTML = `Sub title: ${data.sub_title}`;
-				document.querySelector(
 					".info__author"
-				).innerHTML = `Author: ${data.author}`;
+				).innerHTML = `Author(s): ${data.author}`;
+				document.querySelector(
+					".info__publisher"
+				).innerHTML = `Publisher: ${data.publisher}`;
+				document.querySelector(
+					".info__volume"
+				).innerHTML = `Volume: ${data.volume}`;
+				document.querySelector(
+					".info__translator"
+				).innerHTML = `Translator: ${data.translator}`;
 				document.querySelector(
 					".info__date"
 				).innerHTML = `Date of publication: ${data.date}`;
-				document.querySelector(
-					".info__others"
-				).innerHTML = `Others: ${data.others}`;
 
-				document.querySelector(
-					".extracted__img"
-				).innerHTML = `<img src="/static/src/0.jpg?v=${update.getTime()}" />`; // To update avoid using image from cache
+				// document.querySelector(
+				// 	".extracted__img"
+				// ).innerHTML = `<img src="/static/src/0.jpg?v=${update.getTime()}" />`; // To update avoid using image from cache
 
 				document.querySelector(".btn-extract").value = 'Re-upload'
 			} else {
