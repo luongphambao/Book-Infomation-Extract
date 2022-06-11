@@ -8,7 +8,7 @@ class VietOCR:
                 config = Cfg.load_config_from_name('vgg_seq2seq')
                 config['weights'] = model_path
                 config['cnn']['pretrained']=False
-                config['device'] = 'cpu'
+                config['device'] = 'cuda:0'
                 config['predictor']['beamsearch']=False
                 self.predictor = Predictor(config)
 
