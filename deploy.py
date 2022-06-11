@@ -47,4 +47,5 @@ if __name__ == '__main__':
     predictor = Predictor()
     predictor.load_detect_model()
     predictor.load_reg_model()
+    predictor.load_text_detect_model()
     app.run(debug=True)
