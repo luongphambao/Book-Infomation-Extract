@@ -4,19 +4,20 @@ from vietocr.tool.config import Cfg
 
 
 class VietOCR:
-        def __init__(self,model_path="weights/transformerocr.pth"):
-                config = Cfg.load_config_from_name('vgg_seq2seq')
-                config['weights'] = model_path
-                config['cnn']['pretrained']=False
-                config['device'] = 'cuda:0'
-                config['predictor']['beamsearch']=False
-                self.predictor = Predictor(config)
+    def __init__(self, model_path="weights/transformerocr.pth", gpu_enable=False):
+        config = Cfg.load_config_from_name('vgg_seq2seq')
+        config['weights'] = model_path
+        config['cnn']['pretrained'] = False
+        # config['device'] = 'cuda:0'
+        config['device'] = 'cpu' if gpu_enable==False else 'cuda:0'
+        config['predictor']['beamsearch'] = False
+        self.predictor = Predictor(config)
 
-        def predict(self,img):
-              result,prob=self.predictor.predict(img,return_prob=True)
-              
-              return result,prob
-              
+    def predict(self, img):
+        result, prob = self.predictor.predict(img, return_prob=True)
+
+        return result, prob
+
 # out = []
 # idx = 0
 #     #predict ocr
@@ -46,24 +47,24 @@ class VietOCR:
 #                 else:
 #                     im1 = img
 #                     s1, p1 = read(img, key, craft_net, refine_net, detector)
-                    
+
 #                     s = s1
 #                     p = p1
-                    
+
 #                     im2 = cv2.rotate(img, cv2.ROTATE_90_CLOCKWISE)
 #                     s2, p2 = read(im2, key, craft_net, refine_net, detector)
 
 #                     if p2 > p:
 #                       p = p2
 #                       s = s2
-                    
+
 #                     im3 = cv2.rotate(img, cv2.ROTATE_90_COUNTERCLOCKWISE)
 #                     s3, p3 = read(im3, key, craft_net, refine_net, detector)
 
 #                     if p3 > p:
 #                       p = p3
 #                       s = s3
-                    
+
 #                     if key == 0:
 #                         ten_sach += s + " "
 #                     elif key == 1:
@@ -108,7 +109,7 @@ class VietOCR:
 #                 else:
 #                     for s in tai_ban.split():
 #                         ten_sach = ten_sach.replace(s, '')
-        
+
 #         #thêm vào dictionary
 #         features = {
 #             'file names' : fn[idx],
@@ -119,7 +120,7 @@ class VietOCR:
 #             'người dịch': nguoi_dich,
 #             'tái bản': tai_ban
 #         }
-        
+
 #         idx += 1
-        
-        #out.append(features)
+
+    # out.append(features)
