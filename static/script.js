@@ -97,6 +97,9 @@ document.querySelector("form").addEventListener("submit", function (e) {
 				document.querySelector(
 					".info__date"
 				).innerHTML = `Date of publication: ${data.date}`;
+				document.querySelector(
+					".info__elapsed-time"
+				).innerHTML = `Elapsed time: ${Math.round(data.elapsed_time * 100) / 100}s`;
 
 				document.querySelector(
 					".extracted__img"
