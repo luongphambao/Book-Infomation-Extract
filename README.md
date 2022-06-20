@@ -1,5 +1,5 @@
-<h1 align="center"><b>CVCI</b></h>
-<h1 align="center"><b>CS532.M21.KHCL</b></h>
+
+<h1 align="center"><b>CVCI_CS532.M21.KHCL</b></h>
 
 # THÀNH VIÊN NHÓM
 | STT    | MSSV          | Họ và Tên              |Chức Vụ    | Email                   |
