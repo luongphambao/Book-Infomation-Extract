@@ -15,6 +15,7 @@ from craft_text_detector.file_utils import rectify_poly
 from APIs.text_recognition import VietOCR
 from APIs.text_detect import Paddle_detection
 from APIs.craft import predict_craft
+from preprocess_background import preprocess_background
 # except:
 #     from text_recognition import VietOCR
 #     from text_detect import Paddle_detection
@@ -87,8 +88,10 @@ class Predictor():
         self.model_reg = VietOCR(model_path=self.model_reg_path)
 
     def predict(self, img_path,detect_model="craft"):
-        img_folder = os.path.dirname(img_path)       
+        img_folder = os.path.dirname(img_path)
+        preprocess_background(img_path,"uploads")       
         img = cv2.imread(img_path)
+        
         img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
         model_detect = self.model_detect
         model_reg = self.model_reg
