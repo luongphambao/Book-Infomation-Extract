@@ -120,13 +120,16 @@ class Predictor():
             print(img_crop)
             cv2.imwrite(img_crop, crop)
             # print(img_crop)
-            craft_result=predict_craft(crop, row['class'], self.craft_net, self.refine_net)
-            
-            for result in craft_result:
-                text_predict,prob=model_reg.predict_craft(result)
-                print(text)
-                if prob>0.7:
-                    text+=" "+text_predict
+            if row["class"] >2:
+                crop=Image.open(img_crop)
+                text,prob=model_reg.predict(crop)
+            else:
+                craft_result=predict_craft(crop, row['class'], self.craft_net, self.refine_net)
+                for result in craft_result:
+                    text_predict,prob=model_reg.predict_craft(result)
+                    print(text)
+                    if prob>0.7:
+                        text+=" "+text_predict
             if row['class'] == 0:
                 ten_sach.append(text)
             elif row['class'] == 1:
