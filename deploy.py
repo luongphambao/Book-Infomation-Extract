@@ -1,7 +1,7 @@
 from flask import Flask, jsonify, render_template, request
 from werkzeug.utils import secure_filename
 import time
-
+from flask_ngrok import run_with_ngrok
 import os
 from APIs.information_extractor import Predictor
 app = Flask(__name__, template_folder='./')
@@ -53,4 +53,6 @@ if __name__ == '__main__':
     predictor.load_detect_model()
     predictor.load_reg_model()
     predictor.load_craft_model()
-    app.run(debug=True)
+    run_with_ngrok(app)
+    print('ngrok')
+    app.run()
