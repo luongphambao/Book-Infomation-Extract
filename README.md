@@ -5,8 +5,8 @@
 | STT    | MSSV          | Họ và Tên              |Chức Vụ    | Email                   |
 | ------ |:-------------:| ----------------------:|----------:|-------------------------:
 | 1      | 19521242      | Lương Phạm Bảo         |Nhóm trưởng |19521242@gm.uit.edu.vn   |
-| 2      | 19520993      | Nguyễn Gia Thống       |Thành viên  |19520687@gm.uit.edu.vn   |
-| 3      | 19521412      | Phạm Ngọc Dương        |Thành viên  |19521172@gm.uit.edu.vn   |
+| 2      | 19520993      | Nguyễn Gia Thống       |Thành viên  |19520993@gm.uit.edu.vn   |
+| 3      | 19521412      | Phạm Ngọc Dương        |Thành viên  |19521412 .uit.edu.vn   |
 
 # GIỚI THIỆU MÔN HỌC
 * **Tên môn học:** Thị giác máy tính trong tương tác người máy
