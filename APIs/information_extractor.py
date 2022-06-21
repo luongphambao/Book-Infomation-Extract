@@ -156,11 +156,9 @@ class Predictor():
             4: nguoi_dich,
             5: tai_ban
         }
+        json_file="results/"+os.path.basename(img_path).split(".")[0]+".json"
+        with open(json_file, 'w') as f:
+            json.dump(features, f)
+        return feature
         return features
 
-# print(torch.cuda.is_available())
-# predictor=Predictor()
-# predictor.load_detect_model()
-# predictor.load_reg_model()
-# predictor.load_craft_model()
-# print(predictor.predict("./val/48.jpg"))
