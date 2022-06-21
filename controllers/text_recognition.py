@@ -23,3 +23,9 @@ class VietOCR:
 
         return result, prob
 
+if __name__ == "__main__":
+    img_path="controllers/287050441_583564536447637_2636467720808630882_n.jpg" 
+    img = Image.open(img_path)
+    text_reg_model=VietOCR(model_path="weights/transformerocr.pth")
+    a = text_reg_model.predict(img)
+    print(a)

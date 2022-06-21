@@ -12,9 +12,9 @@ from craft_text_detector import (
     get_prediction,
 )
 from craft_text_detector.file_utils import rectify_poly
-from APIs.text_recognition import VietOCR
-#from APIs.text_detect import Paddle_detection
-from APIs.craft import predict_craft
+from controllers.text_recognition import VietOCR
+#from controllers.text_detect import Paddle_detection
+from controllers.craft import predict_craft
 from preprocess_background import preprocess_background
 # except:
 #     from text_recognition import VietOCR
@@ -180,3 +180,21 @@ class Predictor():
         with open(json_file, 'w') as f:
             json.dump(features, f)
         return features
+
+# print(torch.cuda.is_available())
+# predictor=Predictor()
+# predictor.load_detect_model()
+# predictor.load_reg_model()
+# predictor.load_craft_model()
+# list_result=[]
+# for img_path in glob.glob("./eval/*.jpg"):
+#     #preprocess_background(img_path,"eval")
+#     result=predictor.predict(img_path)
+#     result["img_name"]=os.path.basename(img_path)
+#     with open("./eval/result.json", "a") as f:
+#         json.dump(result, f)
+#         f.write("\n")
+#     list_result.append(result)
+# # csv_predict=pd.DataFrame(list_result,columns=["ten_sach","ten_tac_gia","nha_xuat_ban","tap","nguoi_dich","tai_ban","name_img"])
+# # csv_predict.to_csv("predict.csv",index=False)
+

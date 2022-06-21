@@ -99,4 +99,86 @@ def predict_craft(img, key, craft_net, refine_net):
   for i in regions_expand:
     a_expand.append(rectify_poly(image, i))
   return a,a_expand
+def visualize_craft_detect(img, key, craft_net, refine_net):
+    image = read_image(img)
+                      
+    #predict craft
+    if key == 0:
+        prediction_result = get_prediction(
+            image=image,
+            craft_net=craft_net,
+            refine_net=refine_net,
+            text_threshold=0.7,
+            link_threshold=0.3,
+            low_text=0.3,
+            cuda=True,
+            long_size=1280
+        )
+    elif key == 3:
+        prediction_result = get_prediction(
+              image=image,
+              craft_net=craft_net,
+              refine_net=refine_net,
+              text_threshold=0.7,
+              link_threshold=0.1,
+              low_text=0.05,
+              cuda=True,
+              long_size=1280
+          )
+    else:
+        prediction_result = get_prediction(
+            image=image,
+            craft_net=craft_net,
+            refine_net=refine_net,
+            text_threshold=0.7,
+            link_threshold=0.1,
+            low_text=0.2,
+            cuda=True,
+            long_size=1280
+        )
+    #print("prediction_result:",prediction_result['boxes'])
+    regions=prediction_result["polys"]
+    print("regions:",regions)
+    print(regions)
+    boxes=[]
+    for box in prediction_result['boxes']:
+        box=order_points(box)
+        bl,br,tr,tl=box[0],box[1],box[2],box[3]
+        tl=[tl[0],int(tl[1]*1)]
+        tr=[int(tr[0]),int(tr[1]*1)]
+        bl=[bl[0],int(bl[1]*0.85)]
+        br=[int(br[0]),int(br[1]*0.85)]
+        boxes.append([bl,br,tr,tl])
+
+    exported_file_paths = export_detected_regions(
+      image=image,
+      regions=regions,
+      output_dir="output",
+      rectify=True)
+    exported_file_paths_expand=export_detected_regions(image=image,regions=boxes,output_dir="output_expand",rectify=True)
+    
+    print(exported_file_paths)
+    return exported_file_paths,exported_file_paths_expand
+
   
+if __name__ == "__main__":
+  img_path="controllers/0.jpg"
+  refine_net = load_refinenet_model(cuda=True)
+  craft_net = load_craftnet_model(cuda=True)
+  visualize_path,visualize_expand=visualize_craft_detect(img_path,0,craft_net,refine_net)
+
+# def craft_detect():
+
+#     #load model
+#     refine_net = load_refinenet_model(cuda=True)
+#     craft_net = load_craftnet_model(cuda=True)
+    
+#     img_path="val/33.jpg" 
+#     img = Image.open(img_path)
+#     text_reg_model=VietOCR(model_path="weights/seq2seq.pth")
+#     a = read(img_path, 0, craft_net, refine_net)
+#     for i in a:
+#       text,prob=text_reg_model.predict_craft(i)
+#       if prob>0.7:
+#         print(text,prob)
+# craft_detect()

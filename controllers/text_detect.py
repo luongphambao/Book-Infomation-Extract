@@ -5,8 +5,8 @@ import cv2
 
 def Paddle_detection(ocr,img_path):
     
-    text = ocr.ocr(img_path)
-    return text
+    results = ocr.ocr(img_path)
+    return results 
 # import craft functions
 # from craft_text_detector import (
 #     read_image,
