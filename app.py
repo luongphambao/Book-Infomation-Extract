@@ -3,7 +3,7 @@ from werkzeug.utils import secure_filename
 import time
 from flask_ngrok import run_with_ngrok
 import os
-from APIs.information_extractor import Predictor
+from controllers.information_extractor import Predictor
 app = Flask(__name__, template_folder='./')
 
 
