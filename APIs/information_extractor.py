@@ -4,6 +4,7 @@ import torch
 import os
 import cv2
 from PIL import Image
+import glob
 from craft_text_detector import (
     read_image,
     load_craftnet_model,
@@ -11,26 +12,27 @@ from craft_text_detector import (
     get_prediction,
 )
 from craft_text_detector.file_utils import rectify_poly
-
 from APIs.text_recognition import VietOCR
-from APIs.text_detect import Paddle_detection
+#from APIs.text_detect import Paddle_detection
 from APIs.craft import predict_craft
 from preprocess_background import preprocess_background
 # except:
 #     from text_recognition import VietOCR
 #     from text_detect import Paddle_detection
 #     from craft import predict_craft
+    #from preprocess_background import preprocess_background
 from paddleocr import PaddleOCR
 import numpy as np 
 import scipy.spatial.distance as distance
+import json
 # from code.preprocess_background import preprocess_background
-
+import pandas as pd
 
 def processing_text(text_list):
     if len(text_list) == 0:
         return ""
     else:
-        text_list=[x.lower() for x in text_list if x!=""]
+        #text_list=[x.lower() for x in text_list if x!=""]
         return " ".join(text_list)
 def order_points(pts):
     if isinstance(pts, list):
@@ -86,10 +88,12 @@ class Predictor():
         self.craft_net = load_craftnet_model(cuda=True)
     def load_reg_model(self):
         self.model_reg = VietOCR(model_path=self.model_reg_path)
-
+    def load_paddle_model(self):
+        self.paddle_ocr = PaddleOCR()
     def predict(self, img_path,detect_model="craft"):
         img_folder = os.path.dirname(img_path)
-        preprocess_background(img_path,"uploads")       
+        preprocess_background(img_path,"static/src/uploads")
+        #results_paddle=Paddle_detection(self.paddle_ocr,img_path)      
         img = cv2.imread(img_path)
         
         img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
@@ -97,7 +101,7 @@ class Predictor():
         model_reg = self.model_reg
         #model_text_detect = self.model_text_detect
         # predict region of information extract
-        predict = model_detect(img, size=1000)
+        predict = model_detect(img, size=800)
         locate = predict.pandas().xyxy[0]
         print("Yolo predict sucess")
         # lấy danh sách kết quả
@@ -124,12 +128,16 @@ class Predictor():
                 crop=Image.open(img_crop)
                 text,prob=model_reg.predict(crop)
             else:
-                craft_result=predict_craft(crop, row['class'], self.craft_net, self.refine_net)
-                for result in craft_result:
-                    text_predict,prob=model_reg.predict_craft(result)
-                    print(text)
-                    if prob>0.7:
-                        text+=" "+text_predict
+                text=[]
+                craft_result,craft_result_expand=predict_craft(crop, row['class'], self.craft_net, self.refine_net)
+                for i in range(len(craft_result)):
+                    text_predict,prob=model_reg.predict_craft(craft_result[i])
+                    text_predict_expand,prob_expand=model_reg.predict_craft(craft_result_expand[i])
+                    if prob_expand==max(prob,prob_expand):
+                        text_predict=text_predict_expand
+                    if  max(prob,prob_expand)>0.7:
+                        text.append(text_predict)
+                text=processing_text(text)
             if row['class'] == 0:
                 ten_sach.append(text)
             elif row['class'] == 1:
@@ -143,11 +151,23 @@ class Predictor():
             else:
                 tai_ban.append(text)
         ten_sach = processing_text(ten_sach)
+        #ten_sach=ten_sach.upper()
         ten_tac_gia = processing_text(ten_tac_gia)
+        ten_tac_gia=ten_tac_gia.upper()
         nha_xuat_ban = processing_text(nha_xuat_ban)
         tap = processing_text(tap)
         nguoi_dich = processing_text(nguoi_dich)
+        nguoi_dich=nguoi_dich.upper()
         tai_ban = processing_text(tai_ban)
+
+        #post processs
+        if ten_tac_gia in ten_sach:
+            ten_sach.replace(ten_tac_gia,"")
+        if nguoi_dich in tai_ban:
+            tai_ban.replace(nguoi_dich,"")
+        # boxes = [line[0] for line in results_paddle]
+        # txts = [line[1][0] for line in results_paddle]
+        # scores = [line[1][1] for line in results_paddle]
         features = {
             0: ten_sach,
             1: ten_tac_gia,
@@ -159,6 +179,4 @@ class Predictor():
         json_file="results/"+os.path.basename(img_path).split(".")[0]+".json"
         with open(json_file, 'w') as f:
             json.dump(features, f)
-        return feature
         return features
-
